@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S1S0N · Commandes et inventaires</title>
+<meta name="description" content="Les commandes du tchat de S1S0N sur Twitch, les objets et succès à débloquer, et l'inventaire de chaque viewer.">
+<style>
+  :root { --bg: #100d1b; --card: #1a1530; --card-2: #221b3d; --text: #f3eeff; --muted: #b2abc7; --faint: #8a83a3; --pink: #ff5fb8; --cyan: #5ad1ff; --gold: #ffd76a; --line: rgba(255, 255, 255, 0.1); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(120% 70% at 70% 0%, #2a1650 0%, transparent 60%), var(--bg); color: var(--text); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 44px 16px 72px; }
+  h1 { margin: 0; font-size: clamp(30px, 6vw, 46px); letter-spacing: 0.02em; }
+  h1 span { color: var(--pink); }
+  h2 { margin: 44px 0 12px; font-size: 22px; color: var(--cyan); }
+  p { color: var(--muted); margin: 6px 0; }
+  a { color: var(--cyan); }
+  .lead { font-size: 18px; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  nav a { padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-size: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .cmd { padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  .cmd code { font: 700 16px/1.3 ui-monospace, "Cascadia Mono", Consolas, monospace; color: var(--pink); }
+  .cmd p { margin: 4px 0 0; font-size: 15px; }
+  .search { display: flex; gap: 8px; flex-wrap: wrap; }
+  .search input { flex: 1 1 240px; min-width: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--text); font: inherit; }
+  .search input:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+  .inv { margin-top: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+  .inv-top { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .stats span { padding: 5px 11px; border-radius: 999px; background: var(--card-2); border: 1px solid var(--line); font-size: 15px; white-space: nowrap; }
+  .who b { display: block; font-size: 30px; line-height: 1.1; overflow-wrap: anywhere; }
+  .hint { margin-top: 12px; font-size: 15px; }
+  .hint code { color: var(--pink); }
+  /* apercu de l'avatar (meme mise en scene que sur le stream) */
+  .av { position: relative; flex: none; width: 150px; height: 170px; }
+  .av-aura { position: absolute; left: 31px; top: 36px; width: 88px; height: 88px; border-radius: 50%; filter: blur(6px); }
+  .av-head { position: absolute; left: 40px; top: 45px; width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--pink); background: #3a1a6a center / cover no-repeat; display: flex; align-items: center; justify-content: center; font: 800 30px/1 system-ui; }
+  .av-top { position: absolute; left: 75px; top: 12px; transform: translateX(-50%) rotate(-10deg); font-size: 34px; }
+  .av-ears { position: absolute; left: 32px; top: 38px; width: 86px; height: 50px; border: 6px solid; border-bottom: none; border-radius: 43px 43px 0 0; }
+  .av-body { position: absolute; left: 54px; top: 110px; width: 42px; height: 32px; border-radius: 15px 15px 9px 9px; background: var(--pink); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .av-cape { position: absolute; left: 42px; top: 108px; width: 66px; height: 44px; clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%); }
+  .av-wing { position: absolute; top: 92px; font-size: 36px; }
+  .av-item { position: absolute; left: 104px; top: 116px; font-size: 24px; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin-top: 16px; }
+  .it { position: relative; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card-2); }
+  .it b { display: block; font-size: 16px; }
+  .it small { display: block; color: var(--faint); font-size: 13px; line-height: 1.35; }
+  .it.off { opacity: 0.45; }
+  .it.on { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
+  .it .tag { position: absolute; right: 8px; top: 8px; font: 700 11px/1 ui-monospace, Consolas, monospace; letter-spacing: 0.06em; color: var(--gold); }
+  .slot-t { margin: 16px 0 0; font: 700 13px/1 ui-monospace, Consolas, monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan); }
+  .ach { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+  .ach div { padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  .ach b { display: block; }
+  .ach small { color: var(--faint); font-size: 13px; }
+  .ach .no { opacity: 0.45; }
+  .top { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .top ol { margin: 0; padding: 12px 16px 12px 36px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  .top li { color: var(--text); padding: 2px 0; }
+  .top li em { color: var(--faint); font-style: normal; font-size: 14px; }
+  .top li a { color: inherit; text-decoration: none; }
+  .top li a:hover { color: var(--cyan); }
+  .muted { color: var(--faint); font-size: 14px; }
+  footer { margin-top: 48px; color: var(--faint); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>S1S0N <span>· commandes</span></h1>
+  <p class="lead">Tout ce que tu peux taper dans le tchat du live, les objets à débloquer pour ton avatar, et ton inventaire.</p>
+  <nav><a href="https://www.twitch.tv/s1s0n">Chaîne Twitch</a><a href="#inventaire">Mon inventaire</a><a href="#objets">Les objets</a><a href="#succes">Les succès</a><a href="#classement">Classement</a></nav>
+
+  <h2>Les commandes du tchat</h2>
+  <div class="grid" id="cmds"><p>Chargement…</p></div>
+
+  <h2 id="inventaire">Mon inventaire</h2>
+  <p>Écris ton pseudo Twitch : tu vois ton avatar, tes objets et tes succès. Pour changer ce que porte ton avatar, tape <code>!equiper nom-de-l'objet</code> dans le tchat pendant le live.</p>
+  <div class="search"><input id="q" list="names" placeholder="Ton pseudo Twitch" autocomplete="off" spellcheck="false" aria-label="Ton pseudo Twitch"><datalist id="names"></datalist></div>
+  <div id="inv"></div>
+
+  <h2 id="objets">Les objets</h2>
+  <p>Chaque succès débloque des objets. Un objet par emplacement : tête, aura, dos, badge et objet à côté.</p>
+  <div id="items"></div>
+
+  <h2 id="succes">Les succès</h2>
+  <div class="ach" id="ach"></div>
+
+  <h2 id="classement">Classement</h2>
+  <div class="top" id="top"></div>
+
+  <footer id="foot">Les chiffres comptent depuis octobre 2026 (lancement du suivi). Pseudos et chiffres publics, issus du tchat Twitch.</footer>
+</main>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const nf = v => Number(v || 0).toLocaleString("fr-FR");
+let D = null;
+const AURA = { "aura-or": "radial-gradient(circle, rgba(255,215,106,.95) 45%, transparent 70%)", "aura-bleue": "radial-gradient(circle, rgba(90,209,255,.95) 45%, transparent 70%)",
+  "aura-violette": "radial-gradient(circle, rgba(185,90,255,.95) 45%, transparent 70%)", "aura-aube": "radial-gradient(circle, rgba(255,190,110,.95) 38%, rgba(255,95,184,.75) 56%, transparent 72%)",
+  "flammes": "radial-gradient(circle, rgba(255,150,60,.95) 40%, rgba(255,80,40,.6) 58%, transparent 72%)" };
+const EARS = { "casque-or": "#ffd76a", "casque-argent": "#cfd3e6", "casque-noir": "#2a2633" };
+const TOP = { "couronne": "👑", "haut-de-forme": "🎩", "casquette": "🧢", "pousse": "🌱", "bonnet": "🎅" };
+const CAPE = { "cape": "linear-gradient(#8b3dff, #45129a)", "cape-rouge": "linear-gradient(#ff4d4d, #8a1f1f)" };
+function itemsBy(id) { return (D.items || []).find(i => i.id === id); }
+function how(it) {
+  if (it.by === "sub") return "être abonné";
+  const a = (D.succes || []).find(s => s.id === it.by);
+  return a ? a.e + " " + a.n + " · " + a.d : it.by;
+}
+function avatar(v) {
+  const eq = Object.values(v.equip || {}), has = k => eq.indexOf(k) !== -1;
+  const aura = eq.map(k => AURA[k]).find(Boolean), ears = eq.map(k => EARS[k]).find(Boolean), top = eq.map(k => TOP[k]).find(Boolean), cape = eq.map(k => CAPE[k]).find(Boolean);
+  const badge = eq.map(k => itemsBy(k)).find(i => i && i.slot === "badge"), obj = eq.map(k => itemsBy(k)).find(i => i && i.slot === "objet");
+  const img = v.img ? ` style="background-image: url('${esc(v.img)}')"` : "";
+  return `<div class="av" aria-hidden="true">${aura ? `<div class="av-aura" style="background: ${aura}"></div>` : ""}` +
+    (has("ailes") ? `<span class="av-wing" style="left: 6px; transform: scaleX(-1)">🪽</span><span class="av-wing" style="left: 104px">🪽</span>` : "") +
+    (cape ? `<div class="av-cape" style="background: ${cape}"></div>` : "") +
+    `<div class="av-body">${badge ? badge.e : ""}</div><div class="av-head"${img}>${v.img ? "" : esc(String(v.name || "?").charAt(0).toUpperCase())}</div>` +
+    (ears ? `<div class="av-ears" style="border-color: ${ears}"></div>` : "") + (top ? `<span class="av-top">${top}</span>` : "") + (obj ? `<span class="av-item">${obj.e}</span>` : "") + `</div>`;
+}
+function showInv(login) {
+  const v = D.viewers[login];
+  if (!v) { $("inv").innerHTML = login ? `<div class="inv"><p>Pas encore de pseudo « ${esc(login)} » : écris dans le tchat pendant un live, puis reviens (la page se met à jour toutes les 10 min environ).</p></div>` : ""; return; }
+  const have = new Set(v.items || []), worn = new Set(Object.values(v.equip || {}));
+  const slots = (D.slots || []).map(s => {
+    const list = (D.items || []).filter(i => i.slot === s.id);
+    return `<div class="slot-t">${esc(s.n)}</div><div class="slots">` + list.map(i => {
+      const ok = have.has(i.id);
+      return `<div class="it ${worn.has(i.id) ? "on" : ok ? "" : "off"}">${worn.has(i.id) ? '<span class="tag">PORTÉ</span>' : ""}<b>${ok ? "" : "🔒 "}${i.e} ${esc(i.n)}</b>` +
+        `<small>${ok ? (worn.has(i.id) ? "sur ton avatar" : "!equiper " + esc(i.id)) : esc(how(i))}</small></div>`;
+    }).join("") + `</div>`;
+  }).join("");
+  const ach = new Set(v.ach || []);
+  $("inv").innerHTML = `<div class="inv"><div class="inv-top">${avatar(v)}<div class="who"><b>${esc(v.name)}</b>` +
+    `<div class="stats"><span>🎒 ${have.size} / ${(D.items || []).length} objets</span><span>🏅 ${ach.size} succès</span>` +
+    (v.lives ? `<span>⭐ ${nf(v.lives)} lives</span>` : "") + (v.streak >= 2 ? `<span>🔥 ${v.streak} d'affilée</span>` : "") + (v.best >= 2 ? `<span>🏆 record ${v.best}</span>` : "") +
+    `<span>💬 ${nf(v.msgs)} messages</span></div></div></div>` +
+    `<p class="hint">Dans le tchat : <code>!equiper casquette</code> · <code>!retirer aura</code> · <code>!inventaire</code></p>` + slots +
+    `<div class="slot-t">Succès</div><div class="slots">${(D.succes || []).map(a => `<div class="it ${ach.has(a.id) ? "" : "off"}"><b>${ach.has(a.id) ? "" : "🔒 "}${a.e} ${esc(a.n)}</b><small>${esc(a.d)}</small></div>`).join("")}</div></div>`;
+}
+function render() {
+  $("cmds").innerHTML = (D.commands || []).map(c => `<div class="cmd"><code>${esc(c.c)}</code><p>${esc(c.d)}</p></div>`).join("");
+  const names = Object.entries(D.viewers || {}).sort((a, b) => (b[1].lives - a[1].lives) || (b[1].msgs - a[1].msgs));
+  $("names").innerHTML = names.map(([k, v]) => `<option value="${esc(v.name)}">`).join("");
+  $("items").innerHTML = (D.slots || []).map(s => `<div class="slot-t">${esc(s.n)}</div><div class="slots">` +
+    (D.items || []).filter(i => i.slot === s.id).map(i => `<div class="it"><b>${i.e} ${esc(i.n)}</b><small>${esc(how(i))}</small></div>`).join("") + `</div>`).join("");
+  const own = id => names.filter(([k, v]) => (v.ach || []).indexOf(id) !== -1).length;
+  $("ach").innerHTML = (D.succes || []).map(a => `<div><b>${a.e} ${esc(a.n)}</b><small>${esc(a.d)} · ${own(a.id)} viewer${own(a.id) > 1 ? "s" : ""}</small></div>`).join("");
+  const top = (key, label, fmt) => `<ol aria-label="${esc(label)}"><p style="margin: 0 0 6px -20px; color: var(--cyan); font-weight: 700;">${esc(label)}</p>` +
+    names.slice().sort((a, b) => (b[1][key] || 0) - (a[1][key] || 0)).filter(x => x[1][key] > 0).slice(0, 10)
+      .map(([k, v]) => `<li><a href="?v=${encodeURIComponent(k)}#inventaire">${esc(v.name)}</a> <em>${fmt(v)}</em></li>`).join("") + `</ol>`;
+  $("top").innerHTML = (D.lives_known >= 8 ? top("lives", "Les plus fidèles", v => nf(v.lives) + " lives") : "") + top("msgs", "Les plus bavards", v => nf(v.msgs) + " messages") +
+    top("best", "Meilleures séries", v => "🔥 " + v.best + " lives d'affilée");
+  $("foot").textContent = "Mis à jour le " + new Date(D.updated * 1000).toLocaleString("fr-FR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }) +
+    " · les chiffres comptent depuis octobre 2026 · pseudos et chiffres publics, issus du tchat Twitch.";
+  const want = new URLSearchParams(location.search).get("v");
+  if (want) { const k = want.toLowerCase(); $("q").value = (D.viewers[k] || {}).name || want; showInv(k); }
+}
+$("q").addEventListener("input", () => {
+  if (!D) return;
+  const q = norm($("q").value.trim().replace(/^@/, ""));
+  const k = Object.keys(D.viewers).find(k => norm(k) === q || norm(D.viewers[k].name) === q);
+  if (k) { showInv(k); history.replaceState(null, "", "?v=" + encodeURIComponent(k) + "#inventaire"); }
+  else if (q.length >= 3) showInv(q);
+  else $("inv").innerHTML = "";
+});
+fetch("data.json?t=" + Date.now(), { cache: "no-store" }).then(r => r.json()).then(d => { D = d; render(); })
+  .catch(() => { $("cmds").innerHTML = "<p>La page n'est pas encore prête : reviens dans quelques minutes.</p>"; });
+</script>
+</body>
+</html>
