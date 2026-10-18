@@ -288,7 +288,7 @@
   </section>
 
   <section id="clips" class="reveal" hidden>
-    <div class="sh"><div><h2>Meilleurs clips</h2><p id="clipsSub">Les moments les plus vus de la chaîne.</p></div></div>
+    <div class="sh"><div><h2>Meilleurs moments</h2><p id="clipsSub">Les vidéos les plus vues.</p></div></div>
     <div class="media" id="clipsList"></div>
   </section>
 
@@ -390,7 +390,7 @@ function showInv(login) {
 }
 
 // ---- sections choisies dans l'appli (onglet Page web)
-const SECTIONS = [["planning", "Planning"], ["commandes", "Commandes"], ["inventaire", "Inventaire"], ["clips", "Clips"], ["videos", "Vidéos"], ["objets", "Objets"], ["succes", "Succès"], ["classement", "Classement"]];
+const SECTIONS = [["planning", "Planning"], ["commandes", "Commandes"], ["inventaire", "Inventaire"], ["clips", "Moments"], ["videos", "Vidéos"], ["objets", "Objets"], ["succes", "Succès"], ["classement", "Classement"]];
 const shown = k => !D.site || !D.site.show || D.site.show[k] !== false;
 const PF = [[/youtu\.?be/i, "YouTube", "#ff0033"], [/tiktok/i, "TikTok", "#111"], [/instagram/i, "Instagram", "#e1306c"], [/twitch/i, "Twitch", "#9146ff"], [/x\.com|twitter/i, "X", "#111"], [/discord/i, "Discord", "#5865f2"], [/kick\.com/i, "Kick", "#53fc18"]];
 const pfOf = url => (PF.find(p => p[0].test(url)) || [null, "Lien", "#5ad1ff"]);
@@ -408,8 +408,12 @@ function renderExtras() {
   // clips
   const cl = D.clips || [];
   $("clips").hidden = !shown("clips") || !cl.length;
-  $("clipsList").innerHTML = cl.map(c => `<a class="mc" href="${esc(c.url)}" target="_blank" rel="noopener"><div class="th" style="background-image: url('${esc(c.img)}')"><em>${c.dur ? c.dur + " s" : ""}</em></div>` +
-    `<div class="bd"><b>${esc(c.t)}</b><small>▶ ${nf(c.views)} vue${c.views > 1 ? "s" : ""}${c.by ? " · clippé par " + esc(c.by) : ""}${c.date ? " · " + new Date(c.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : ""}</small></div></a>`).join("");
+  const PFC = { YouTube: "#ff0033", Instagram: "#e1306c", Twitch: "#9146ff" };
+  $("clipsSub").textContent = { youtube: "Tes vidéos YouTube les plus vues.", instagram: "Tes Reels Instagram les plus vus.", twitch: "Les clips Twitch les plus vus.", tous: "Le meilleur de YouTube, Instagram et Twitch." }[S.clipsSrc] || "Les vidéos les plus vues.";
+  $("clipsList").innerHTML = cl.map(c => { const pf = c.pf || "Twitch", unit = c.unit || "vue", lbl = unit === "vue" ? (c.views > 1 ? "vues" : "vue") : unit;
+    const fmt = c.dur ? (c.dur >= 60 ? Math.floor(c.dur / 60) + ":" + String(c.dur % 60).padStart(2, "0") : c.dur + " s") : "";
+    return `<a class="mc" href="${esc(c.url)}" target="_blank" rel="noopener"><div class="th" style="background-image: url('${esc(c.img)}')"><span class="pf" style="--c: ${PFC[pf] || "var(--twitch)"}">${esc(pf)}</span>${fmt ? `<em>${fmt}</em>` : ""}</div>` +
+      `<div class="bd"><b>${esc(c.t)}</b><small>${unit === "vue" ? "▶" : "❤"} ${nf(c.views)} ${esc(lbl)}${c.by ? " · clippé par " + esc(c.by) : ""}${c.date ? " · " + new Date(c.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : ""}</small></div></a>`; }).join("");
   // videos
   const vids = S.videos || [];
   $("videos").hidden = !shown("videos") || !vids.length;
