@@ -317,7 +317,7 @@ function render() {
   const V = D.viewers || {};
   VIEW = Object.entries(V).map(([k, v]) => Object.assign({ login: k }, v));
   const owned = VIEW.reduce((t, v) => t + (v.items || []).length, 0), achs = VIEW.reduce((t, v) => t + (v.ach || []).length, 0);
-  $("kpis").innerHTML = [[nf(VIEW.length), "viewers"], [(D.items || []).length, "objets à débloquer"], [nf(achs), "succès débloqués"], [nf(VIEW.reduce((t, v) => t + (v.msgs || 0), 0)), "messages"]]
+  $("kpis").innerHTML = [[nf(VIEW.length), "membres du tchat"], [(D.items || []).length, "objets à débloquer"], [nf(achs), "succès débloqués"], [nf(VIEW.reduce((t, v) => t + (v.msgs || 0), 0)), "messages"]]
     .map(k => `<div class="kpi"><b>${k[0]}</b><span>${k[1]}</span></div>`).join("");
   $("cmds").innerHTML = (D.commands || []).map(c => `<button type="button" class="cmd" data-c="${esc(c.c.split(" ")[0])}"><span class="copy">COPIER</span><code>${esc(c.c)}</code><p>${esc(c.d)}</p></button>`).join("");
   // catalogue
@@ -326,7 +326,7 @@ function render() {
   // succes : combien de viewers l'ont
   $("ach").innerHTML = (D.succes || []).map(a => {
     const n = VIEW.filter(v => (v.ach || []).indexOf(a.id) !== -1).length, p = VIEW.length ? Math.round(n / VIEW.length * 100) : 0;
-    return `<div class="ac"><div class="ac-t"><span>${a.e}</span><b>${esc(a.n)}</b></div><p>${esc(a.d)}</p><div class="bar"><i style="width: ${Math.max(p, n ? 2 : 0)}%"></i></div><small>${n} viewer${n > 1 ? "s" : ""} · ${p} %</small></div>`;
+    return `<div class="ac"><div class="ac-t"><span>${a.e}</span><b>${esc(a.n)}</b></div><p>${esc(a.d)}</p><div class="bar"><i style="width: ${Math.max(p, n ? 2 : 0)}%"></i></div><small>${n} membre${n > 1 ? "s" : ""} · ${p} %</small></div>`;
   }).join("");
   // classements : podium + suite
   const board = (key, title, fmt, show) => {
