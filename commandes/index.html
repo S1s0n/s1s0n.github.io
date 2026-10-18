@@ -40,6 +40,28 @@
   .btn-tw:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(145, 70, 255, 0.6); }
   .btn-tw svg { width: 16px; height: 16px; fill: currentColor; }
 
+  .btn-tw.on-air { background: #eb0400; animation: onair 1.8s infinite; }
+  .btn-tw.on-air i { width: 9px; height: 9px; border-radius: 50%; background: #fff; }
+  .onair { margin-top: 26px; display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: center; padding: 20px 22px; border-radius: 22px;
+    background: linear-gradient(#150d26, #150d26) padding-box, linear-gradient(120deg, #eb0400, var(--pink), var(--twitch)) border-box; border: 2px solid transparent;
+    box-shadow: 0 14px 50px rgba(235, 4, 0, 0.22); animation: rise 0.45s ease-out both; }
+  .onair .tag-live { display: inline-flex; align-items: center; gap: 8px; padding: 5px 11px; border-radius: 8px; background: #eb0400; color: #fff; font: 700 13px/1 var(--f-mono); letter-spacing: 0.12em; }
+  .onair .tag-live b { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: blink 1.2s infinite; }
+  .onair h3 { margin: 10px 0 4px; font: 700 clamp(19px, 2.6vw, 25px)/1.25 var(--f-title); overflow-wrap: anywhere; }
+  .onair .meta { color: var(--muted); font-size: 15px; }
+  .onair .meta span + span::before { content: " · "; color: var(--faint); }
+  .onair .acts { display: flex; flex-direction: column; gap: 8px; }
+  .onair .acts a, .onair .acts button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; padding: 12px 18px; border: 0; border-radius: 14px; font: 700 15px/1 var(--f-body); text-decoration: none; cursor: pointer; white-space: nowrap; }
+  .onair .go { background: #eb0400; color: #fff; box-shadow: 0 8px 24px rgba(235, 4, 0, 0.45); }
+  .onair .watch { background: var(--glass-2); color: var(--text); border: 1px solid var(--line-2) !important; }
+  .player { grid-column: 1 / -1; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #000; }
+  .player iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .offair { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--glass); color: var(--muted); font-size: 15px; }
+  .offair b { color: var(--text); }
+  .offair i { width: 9px; height: 9px; border-radius: 50%; background: var(--faint); }
+  @keyframes onair { 0% { box-shadow: 0 0 0 0 rgba(235, 4, 0, 0.6), 0 6px 22px rgba(235, 4, 0, 0.5); } 80%, 100% { box-shadow: 0 0 0 12px rgba(235, 4, 0, 0), 0 6px 22px rgba(235, 4, 0, 0.5); } }
+  @keyframes blink { 50% { opacity: 0.25; } }
+  @media (max-width: 720px) { .onair { grid-template-columns: 1fr; } }
   /* hero */
   .hero { padding: 64px 0 34px; }
   .live { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--glass); font: 600 13px/1 var(--f-mono); letter-spacing: 0.08em; color: var(--muted); }
@@ -195,7 +217,7 @@
   <div class="wrap">
     <a class="logo" href="#"><i>S1</i>S1S0N</a>
     <nav class="tabs" id="tabs"><a href="#commandes">Commandes</a><a href="#inventaire">Inventaire</a><a href="#objets">Objets</a><a href="#succes">Succès</a><a href="#classement">Classement</a></nav>
-    <a class="btn-tw" href="https://www.twitch.tv/s1s0n" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg><span>Regarder le live</span></a>
+    <a class="btn-tw" id="twBtn" href="https://www.twitch.tv/s1s0n" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg><span id="twTxt">Chaîne Twitch</span></a>
   </div>
 </header>
 
@@ -204,6 +226,7 @@
     <span class="live"><b></b>TCHAT · AVATARS · SUCCÈS</span>
     <h1>Le tchat de <em>S1S0N</em></h1>
     <p class="lead">Les commandes à taper pendant le live, les objets à débloquer pour ton avatar à l'écran, et ton inventaire.</p>
+    <div id="liveBox"></div>
     <div class="kpis" id="kpis"></div>
   </div>
 
@@ -379,10 +402,46 @@ const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.
 document.querySelectorAll(".reveal").forEach(s => io ? io.observe(s) : s.classList.add("in"));
 setTimeout(() => document.querySelectorAll(".reveal").forEach(s => s.classList.add("in")), 1200);   // filet de securite
 
+// ---- en direct ? meme source que l'overlay (decapi.me), relue toutes les minutes
+let LIVE = null, playerOn = false;
+const upFr = t => { const g = k => { const m = String(t).match(new RegExp("(\\d+) " + k)); return m ? Number(m[1]) : 0; };
+  const h = g("hour") + g("day") * 24, m = g("minute"); return h ? h + " h " + String(m).padStart(2, "0") : m + " min"; };
+async function liveCheck() {
+  const ch = (D && D.channel) || "s1s0n", api = k => fetch("https://decapi.me/twitch/" + k + "/" + ch + "?t=" + Date.now(), { cache: "no-store" }).then(r => r.ok ? r.text() : "").catch(() => "");
+  const up = await api("uptime");
+  if (!up) return;
+  if (/offline|error|not found|invalid/i.test(up)) { LIVE = null; return showLive(); }
+  const [title, game, vc] = await Promise.all([api("title"), api("game"), api("viewercount")]);
+  LIVE = { up, title, game, vc: /^\d+$/.test(vc.trim()) ? Number(vc) : null };
+  showLive();
+}
+function showLive() {
+  const ch = (D && D.channel) || "s1s0n", btn = $("twBtn");
+  btn.classList.toggle("on-air", !!LIVE);
+  btn.querySelector("svg").style.display = LIVE ? "none" : "";
+  if (LIVE && !btn.querySelector("i")) btn.insertAdjacentHTML("afterbegin", "<i></i>");
+  if (!LIVE) { const i = btn.querySelector("i"); if (i) i.remove(); }
+  $("twTxt").textContent = LIVE ? "EN DIRECT" + (LIVE.vc != null ? " · " + nf(LIVE.vc) : "") : "Chaîne Twitch";
+  if (LIVE) {
+    $("liveBox").innerHTML = `<div class="onair"><div><span class="tag-live"><b></b>EN DIRECT</span><h3>${esc(LIVE.title || "S1S0N est en live")}</h3>` +
+      `<div class="meta">${[LIVE.game ? "🎮 " + esc(LIVE.game) : "", LIVE.vc != null ? "👥 " + nf(LIVE.vc) + " viewer" + (LIVE.vc > 1 ? "s" : "") : "", "⏱ depuis " + upFr(LIVE.up)].filter(Boolean).map(x => "<span>" + x + "</span>").join("")}</div></div>` +
+      `<div class="acts"><a class="go" href="https://www.twitch.tv/${esc(ch)}" target="_blank" rel="noopener">Rejoindre le live →</a><button type="button" class="watch" id="watchBtn">${playerOn ? "✕ Fermer le lecteur" : "▶ Regarder ici"}</button></div>` +
+      (playerOn ? `<div class="player"><iframe src="https://player.twitch.tv/?channel=${encodeURIComponent(ch)}&parent=${encodeURIComponent(location.hostname)}&autoplay=true" allowfullscreen title="Live de ${esc(ch)} sur Twitch"></iframe></div>` : "") + `</div>`;
+  } else {
+    playerOn = false;
+    const next = D && D.planning && !/^pas de live/i.test(D.planning) ? D.planning.split(" | ")[0] : "";
+    $("liveBox").innerHTML = `<div class="offair"><i></i><span>Hors ligne</span>${next ? `<span>· Prochain live : <b>${esc(next)}</b></span>` : ""}</div>`;
+  }
+}
+document.addEventListener("click", e => { if (e.target.closest("#watchBtn")) { playerOn = !playerOn; showLive(); } });
+setInterval(liveCheck, 60000);
+
 fetch("data.json?t=" + Date.now(), { cache: "no-store" }).then(r => r.json()).then(d => {
   D = d;
   Object.values(D.viewers || {}).forEach(v => { v.items = v.items || []; v.itemsN = v.items.length; });
   render();
+  showLive();
+  liveCheck();
 }).catch(() => { $("cmds").innerHTML = `<div class="empty">La page n'est pas encore prête : reviens dans quelques minutes.</div>`; });
 </script>
 </body>
