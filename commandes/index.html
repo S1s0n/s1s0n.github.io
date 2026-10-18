@@ -190,6 +190,42 @@
   .rows b { flex: 1; min-width: 0; font-weight: 600; font-size: 14.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .rows em { color: var(--muted); font: 600 12.5px var(--f-mono); font-style: normal; }
 
+  /* liens */
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .links a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--glass); color: var(--text); font-weight: 600; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+  .links a:hover { background: var(--glass-2); border-color: var(--c, var(--twitch)); transform: translateY(-1px); }
+  .links a i { width: 9px; height: 9px; border-radius: 50%; background: var(--c, var(--twitch)); }
+  /* planning */
+  .week { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .day { padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: var(--glass); }
+  .day small { display: block; color: var(--pink); font: 700 12.5px/1 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; }
+  .day b { display: block; margin-top: 8px; font: 700 26px/1 var(--f-title); }
+  .day p { margin: 6px 0 0; color: var(--muted); font-size: 14.5px; overflow-wrap: anywhere; }
+  .day.next { border-color: var(--twitch); background: linear-gradient(150deg, rgba(145, 70, 255, 0.25), var(--glass) 70%); box-shadow: 0 10px 34px rgba(145, 70, 255, 0.25); }
+  .count { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 16px; padding: 16px 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--glass); }
+  .count .cd { display: flex; gap: 8px; }
+  .count .cd span { min-width: 64px; padding: 8px 10px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); text-align: center; }
+  .count .cd b { display: block; font: 700 26px/1 var(--f-title); }
+  .count .cd small { color: var(--faint); font: 600 11px/1 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; }
+  .count p { margin: 0; color: var(--muted); }
+  .count p b { color: var(--text); }
+  /* clips + videos */
+  .media { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+  .mc { display: block; border: 1px solid var(--line); border-radius: 18px; background: var(--glass); overflow: hidden; color: inherit; text-decoration: none; transition: transform 0.2s, border-color 0.2s; }
+  .mc:hover { transform: translateY(-3px); border-color: rgba(145, 70, 255, 0.6); }
+  .mc .th { position: relative; aspect-ratio: 16 / 9; background: #1a1230 center / cover no-repeat; display: grid; place-items: center; font-size: 42px; }
+  .mc .th::after { content: "▶"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 34px; color: #fff; background: rgba(0, 0, 0, 0.25); opacity: 0; transition: opacity 0.2s; }
+  .mc:hover .th::after { opacity: 1; }
+  .mc .th em { position: absolute; right: 8px; bottom: 8px; padding: 2px 7px; border-radius: 6px; background: rgba(0, 0, 0, 0.75); font: 600 12px/1.4 var(--f-mono); font-style: normal; color: #fff; }
+  .mc .th .pf { position: absolute; left: 8px; top: 8px; padding: 3px 9px; border-radius: 999px; background: var(--c, var(--twitch)); color: #fff; font: 700 11px/1.3 var(--f-mono); letter-spacing: 0.06em; }
+  .mc .bd { padding: 12px 14px 14px; }
+  .mc .bd b { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 15px; line-height: 1.35; }
+  .mc .bd small { display: block; margin-top: 4px; color: var(--faint); font-size: 13px; }
+  /* carte a partager */
+  .share { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .share button { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--glass-2); color: var(--text); font: 700 14px/1 var(--f-body); cursor: pointer; transition: all 0.2s; }
+  .share button:hover { border-color: var(--pink); }
+  .share button.main { border: 0; background: linear-gradient(135deg, var(--twitch), var(--pink)); box-shadow: 0 8px 24px rgba(255, 95, 184, 0.35); }
   .empty { padding: 26px; border: 1px dashed var(--line-2); border-radius: 18px; color: var(--muted); text-align: center; }
   footer { margin: 60px 0 40px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--faint); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: space-between; }
   .toast { position: fixed; left: 50%; bottom: 26px; z-index: 50; transform: translate(-50%, 20px); padding: 10px 16px; border-radius: 12px; background: #1d1536; border: 1px solid var(--line-2); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); font-weight: 600; font-size: 14px; opacity: 0; transition: all 0.25s; pointer-events: none; }
@@ -216,7 +252,7 @@
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#"><i>S1</i>S1S0N</a>
-    <nav class="tabs" id="tabs"><a href="#commandes">Commandes</a><a href="#inventaire">Inventaire</a><a href="#objets">Objets</a><a href="#succes">Succès</a><a href="#classement">Classement</a></nav>
+    <nav class="tabs" id="tabs"></nav>
     <a class="btn-tw" id="twBtn" href="https://www.twitch.tv/s1s0n" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg><span id="twTxt">Chaîne Twitch</span></a>
   </div>
 </header>
@@ -224,11 +260,17 @@
 <main class="wrap">
   <div class="hero">
     <span class="live"><b></b>TCHAT · AVATARS · SUCCÈS</span>
-    <h1>Le tchat de <em>S1S0N</em></h1>
-    <p class="lead">Les commandes à taper pendant le live, les objets à débloquer pour ton avatar à l'écran, et ton inventaire.</p>
+    <h1 id="hTitle">Le tchat de <em>S1S0N</em></h1>
+    <p class="lead" id="hIntro">Les commandes à taper pendant le live, les objets à débloquer pour ton avatar à l'écran, et ton inventaire.</p>
+    <div class="links" id="links"></div>
     <div id="liveBox"></div>
     <div class="kpis" id="kpis"></div>
   </div>
+
+  <section id="planning" class="reveal" hidden>
+    <div class="sh"><div><h2>Planning</h2><p>Les prochains lives de la semaine.</p></div></div>
+    <div id="count"></div><div class="week" id="week"></div>
+  </section>
 
   <section id="commandes" class="reveal">
     <div class="sh"><div><h2>Commandes</h2><p>Clique pour copier, puis colle-la dans le tchat Twitch.</p></div></div>
@@ -243,6 +285,16 @@
       <div class="sugg" id="sugg" role="listbox" hidden></div>
     </div>
     <div id="inv"></div>
+  </section>
+
+  <section id="clips" class="reveal" hidden>
+    <div class="sh"><div><h2>Meilleurs clips</h2><p id="clipsSub">Les moments les plus vus de la chaîne.</p></div></div>
+    <div class="media" id="clipsList"></div>
+  </section>
+
+  <section id="videos" class="reveal" hidden>
+    <div class="sh"><div><h2>Vidéos et shorts</h2><p>À voir et à partager.</p></div></div>
+    <div class="media" id="videosList"></div>
   </section>
 
   <section id="objets" class="reveal">
@@ -321,7 +373,8 @@ function showInv(login) {
   $("inv").innerHTML = `<div class="profile"><div class="pf-head">${avatar(v)}<div><h3 class="pf-name">${esc(v.name)}</h3>` +
     `<div class="pf-sub">Dans le tchat : <code>!equiper casquette</code> · <code>!retirer aura</code> · <code>!inventaire</code></div>` +
     `<div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Collection"><i style="width: 0%"></i></div><div class="bar-l"><span>Collection</span><span>${pct} %</span></div>` +
-    `<div class="tiles">${tiles.map(t => `<div class="tile"><b>${esc(t[0])}</b><span>${esc(t[1])}</span></div>`).join("")}</div></div></div>` +
+    `<div class="tiles">${tiles.map(t => `<div class="tile"><b>${esc(t[0])}</b><span>${esc(t[1])}</span></div>`).join("")}</div>` +
+    (shown("partage") ? `<div class="share"><button type="button" class="main" data-share="png" data-l="${esc(login)}">📸 Télécharger ma carte</button><button type="button" data-share="link" data-l="${esc(login)}">🔗 Copier le lien</button></div>` : "") + `</div></div>` +
     `<div class="pf-body"><div class="seg" id="seg">${slots.map(s => { const n = (D.items || []).filter(i => (s.id === "tout" || i.slot === s.id) && have.has(i.id)).length;
       return `<button type="button" data-s="${s.id}" class="${s.id === slotSel ? "on" : ""}">${esc(s.n.charAt(0).toUpperCase() + s.n.slice(1))}<small>${n}</small></button>`; }).join("")}</div>` +
     `<div class="items" id="invItems"></div><div class="slot-h">Succès · ${ach.size} / ${(D.succes || []).length}</div>` +
@@ -335,6 +388,102 @@ function showInv(login) {
   $("seg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; slotSel = b.dataset.s; [...$("seg").children].forEach(x => x.classList.toggle("on", x === b)); fill(); });
   requestAnimationFrame(() => { const i = $("inv").querySelector(".bar i"); if (i) i.style.width = pct + "%"; });
 }
+
+// ---- sections choisies dans l'appli (onglet Page web)
+const SECTIONS = [["planning", "Planning"], ["commandes", "Commandes"], ["inventaire", "Inventaire"], ["clips", "Clips"], ["videos", "Vidéos"], ["objets", "Objets"], ["succes", "Succès"], ["classement", "Classement"]];
+const shown = k => !D.site || !D.site.show || D.site.show[k] !== false;
+const PF = [[/youtu\.?be/i, "YouTube", "#ff0033"], [/tiktok/i, "TikTok", "#111"], [/instagram/i, "Instagram", "#e1306c"], [/twitch/i, "Twitch", "#9146ff"], [/x\.com|twitter/i, "X", "#111"], [/discord/i, "Discord", "#5865f2"], [/kick\.com/i, "Kick", "#53fc18"]];
+const pfOf = url => (PF.find(p => p[0].test(url)) || [null, "Lien", "#5ad1ff"]);
+const ytId = url => { const m = String(url).match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([\w-]{11})/); return m ? m[1] : ""; };
+const SOC_C = { Twitch: "#9146ff", YouTube: "#ff0033", TikTok: "#ff2a5f", Instagram: "#e1306c", X: "#cfd3e6", Discord: "#5865f2", Kick: "#53fc18", Facebook: "#1877f2", Snapchat: "#fffc00", Threads: "#cfd3e6" };
+function renderExtras() {
+  const S = D.site || {};
+  if (S.title) $("hTitle").textContent = S.title;
+  if (S.intro) $("hIntro").textContent = S.intro;
+  $("links").innerHTML = (S.socials || []).map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener" style="--c: ${SOC_C[x.n] || "var(--twitch)"}"><i></i>${esc(x.n)}</a>`).join("") +
+    (S.links || []).map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener" style="--c: var(--cyan)"><i></i>${esc(x.t)}</a>`).join("");
+  SECTIONS.forEach(([k]) => { const el = $(k); if (el) el.hidden = !shown(k); });
+  $("tabs").innerHTML = SECTIONS.filter(([k]) => shown(k) && !$(k).hidden && (k !== "clips" || (D.clips || []).length) && (k !== "videos" || (S.videos || []).length) && (k !== "planning" || (D.schedule || []).length))
+    .map(([k, n]) => `<a href="#${k}">${n}</a>`).join("");
+  // clips
+  const cl = D.clips || [];
+  $("clips").hidden = !shown("clips") || !cl.length;
+  $("clipsList").innerHTML = cl.map(c => `<a class="mc" href="${esc(c.url)}" target="_blank" rel="noopener"><div class="th" style="background-image: url('${esc(c.img)}')"><em>${c.dur ? c.dur + " s" : ""}</em></div>` +
+    `<div class="bd"><b>${esc(c.t)}</b><small>▶ ${nf(c.views)} vue${c.views > 1 ? "s" : ""}${c.by ? " · clippé par " + esc(c.by) : ""}${c.date ? " · " + new Date(c.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : ""}</small></div></a>`).join("");
+  // videos
+  const vids = S.videos || [];
+  $("videos").hidden = !shown("videos") || !vids.length;
+  $("videosList").innerHTML = vids.map(v => { const pf = pfOf(v.url), id = ytId(v.url);
+    return `<a class="mc" href="${esc(v.url)}" target="_blank" rel="noopener"><div class="th" style="${id ? `background-image: url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')` : `background: linear-gradient(135deg, ${pf[2]}, #1a1230)`}">` +
+      `<span class="pf" style="--c: ${pf[2]}">${pf[1]}</span>${id ? "" : "▶"}</div><div class="bd"><b>${esc(v.t)}</b><small>${esc(new URL(v.url).hostname.replace(/^www\./, ""))}</small></div></a>`; }).join("");
+  // planning + compte a rebours
+  const sch = D.schedule || [];
+  $("planning").hidden = !shown("planning") || !sch.length;
+  if (sch.length) {
+    const JOURS = ["DIMANCHE", "LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI"], now = Date.now();
+    const next = sch.find(x => x.ts * 1000 > now - 4 * 3600e3);
+    $("week").innerHTML = sch.map(x => { const d = new Date(x.ts * 1000);
+      return `<div class="day${x === next ? " next" : ""}"><small>${JOURS[d.getDay()]} ${d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</small><b>${d.getHours()}h${d.getMinutes() ? String(d.getMinutes()).padStart(2, "0") : ""}</b><p>${esc(x.title || "Live")}</p></div>`; }).join("");
+    tickCount();
+  }
+}
+function tickCount() {
+  const sch = (D && D.schedule) || [], el = $("count");
+  if (!el || !sch.length) return;
+  el.className = "count";
+  const now = Date.now(), next = sch.find(x => x.ts * 1000 > now);
+  if (LIVE) { el.innerHTML = `<p>🔴 <b>En direct maintenant</b> — ${esc(LIVE.title || "")}</p>`; return; }
+  if (!next) { el.innerHTML = ""; return; }
+  const s = Math.max(0, Math.floor((next.ts * 1000 - now) / 1000)), dd = Math.floor(s / 86400), hh = Math.floor(s / 3600) % 24, mm = Math.floor(s / 60) % 60, ss = s % 60;
+  el.className = "count";
+  el.innerHTML = `<div class="cd">${[[dd, "jours"], [hh, "heures"], [mm, "min"], [ss, "sec"]].map(x => `<span><b>${String(x[0]).padStart(2, "0")}</b><small>${x[1]}</small></span>`).join("")}</div>` +
+    `<p>avant le prochain live : <b>${esc(next.title || "Live")}</b></p>`;
+}
+setInterval(tickCount, 1000);
+
+// ---- carte a partager : image 1080 x 1350 dessinee dans le navigateur
+function loadImg(url) { return new Promise(res => { if (!url) return res(null); const i = new Image(); i.crossOrigin = "anonymous"; i.onload = () => res(i); i.onerror = () => res(null); i.src = url; }); }
+async function shareCard(login) {
+  const v = D.viewers[login]; if (!v) return;
+  const W = 1080, H = 1350, c = document.createElement("canvas"); c.width = W; c.height = H;
+  const g = c.getContext("2d");
+  await (document.fonts ? document.fonts.ready : Promise.resolve());
+  const bg = g.createLinearGradient(0, 0, W, H); bg.addColorStop(0, "#1c0f3d"); bg.addColorStop(0.55, "#0c0918"); bg.addColorStop(1, "#2a0f33"); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const glow = (x, y, r, col) => { const rg = g.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, col); rg.addColorStop(1, "transparent"); g.fillStyle = rg; g.fillRect(0, 0, W, H); };
+  glow(200, 150, 600, "rgba(145,70,255,.45)"); glow(950, 250, 500, "rgba(255,95,184,.3)");
+  const rr = (x, y, w, h, r) => { g.beginPath(); g.roundRect(x, y, w, h, r); };
+  g.strokeStyle = "rgba(255,255,255,.14)"; g.lineWidth = 3; rr(40, 40, W - 80, H - 80, 48); g.stroke();
+  g.fillStyle = "#ff5fb8"; g.font = "700 30px 'JetBrains Mono', monospace"; g.textAlign = "center"; g.fillText("CARTE DE FIDÉLITÉ · " + String(D.channel || "s1s0n").toUpperCase(), W / 2, 130);
+  // photo + aura + objets portes
+  const eq = Object.values(v.equip || {}), auraC = { "aura-or": "rgba(255,215,106,.9)", "aura-bleue": "rgba(90,209,255,.9)", "aura-violette": "rgba(185,90,255,.9)", "aura-aube": "rgba(255,170,120,.9)", "flammes": "rgba(255,130,50,.9)" };
+  const ac = eq.map(k => auraC[k]).find(Boolean); if (ac) glow(W / 2, 400, 260, ac);
+  const img = await loadImg(v.img), cx = W / 2, cy = 400, R = 170;
+  g.save(); g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.closePath(); g.clip();
+  if (img) g.drawImage(img, cx - R, cy - R, R * 2, R * 2); else { g.fillStyle = colorOf(v.name); g.fillRect(cx - R, cy - R, R * 2, R * 2); g.fillStyle = "#fff"; g.font = "700 150px 'Chakra Petch'"; g.textBaseline = "middle"; g.fillText(String(v.name || "?").charAt(0).toUpperCase(), cx, cy + 6); g.textBaseline = "alphabetic"; }
+  g.restore(); g.lineWidth = 12; g.strokeStyle = colorOf(v.name); g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.stroke();
+  const top = eq.map(k => ({ couronne: "👑", "haut-de-forme": "🎩", casquette: "🧢", pousse: "🌱", bonnet: "🎅" }[k])).find(Boolean);
+  g.font = "120px serif"; if (top) g.fillText(top, cx, cy - R - 10);
+  const obj = eq.map(item).find(i => i && i.slot === "objet"); if (obj) { g.font = "90px serif"; g.fillText(obj.e, cx + R + 40, cy + R - 10); }
+  // nom + chiffres
+  g.fillStyle = "#fff"; g.font = "700 96px 'Chakra Petch', sans-serif"; g.fillText(v.name, cx, 700, W - 140);
+  const tiles = [[(v.items || []).length + "/" + (D.items || []).length, "OBJETS"], [(v.ach || []).length, "SUCCÈS"], [v.best >= 2 ? v.best : (v.lives || 0), v.best >= 2 ? "RECORD" : "LIVES"], [nf(v.msgs), "MESSAGES"]];
+  tiles.forEach((t, i) => { const x = 90 + i * 232, y = 770; g.fillStyle = "rgba(255,255,255,.07)"; rr(x, y, 212, 150, 26); g.fill();
+    g.fillStyle = "#fff"; g.font = "700 56px 'Chakra Petch'"; g.fillText(String(t[0]), x + 106, y + 78); g.fillStyle = "#b7aed3"; g.font = "600 24px 'JetBrains Mono'"; g.fillText(t[1], x + 106, y + 120); });
+  // objets + succes en emojis
+  const worn = eq.map(item).filter(Boolean).map(i => i.e).join("  "), got = (D.succes || []).filter(a => (v.ach || []).indexOf(a.id) !== -1).map(a => a.e).join(" ");
+  g.font = "64px serif"; if (worn) g.fillText(worn, cx, 1030, W - 140);
+  g.font = "52px serif"; if (got) g.fillText(got, cx, 1120, W - 140);
+  g.fillStyle = "#9146ff"; rr(cx - 260, 1180, 520, 84, 42); g.fill(); g.fillStyle = "#fff"; g.font = "700 38px 'Inter', sans-serif"; g.fillText("twitch.tv/" + (D.channel || "s1s0n"), cx, 1236);
+  try {
+    const a = document.createElement("a"); a.download = "carte-" + login + ".png"; a.href = c.toDataURL("image/png"); a.click(); toast("Carte téléchargée 📸");
+  } catch (e) { toast("Impossible de créer l'image sur ce navigateur"); }
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-share]");
+  if (!b) return;
+  if (b.dataset.share === "png") shareCard(b.dataset.l);
+  else { const u = location.origin + location.pathname + "?v=" + encodeURIComponent(b.dataset.l) + "#inventaire"; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast("Lien copié 🔗")).catch(() => toast(u)); }
+});
 
 function render() {
   const V = D.viewers || {};
@@ -361,6 +510,7 @@ function render() {
   };
   $("boards").innerHTML = board("lives", "⭐ Les plus fidèles", v => nf(v.lives) + " lives", D.lives_known >= 8) + board("msgs", "💬 Les plus bavards", v => nf(v.msgs) + " msg", true) +
     board("best", "🔥 Meilleures séries", v => v.best + " d'affilée", true) + board("itemsN", "🎒 Les collectionneurs", v => v.itemsN + " objet" + (v.itemsN > 1 ? "s" : ""), true);
+  ["commandes", "inventaire", "objets", "succes", "classement"].forEach(k => { $(k).hidden = !shown(k); });
   $("upd").textContent = "Mis à jour le " + new Date(D.updated * 1000).toLocaleString("fr-FR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
   const want = new URLSearchParams(location.search).get("v");
   if (want) { const k = want.toLowerCase(); $("q").value = (V[k] || {}).name || want; showInv(k); }
@@ -421,6 +571,7 @@ function showLive() {
   btn.querySelector("svg").style.display = LIVE ? "none" : "";
   if (LIVE && !btn.querySelector("i")) btn.insertAdjacentHTML("afterbegin", "<i></i>");
   if (!LIVE) { const i = btn.querySelector("i"); if (i) i.remove(); }
+  tickCount();
   $("twTxt").textContent = LIVE ? "EN DIRECT" + (LIVE.vc != null ? " · " + nf(LIVE.vc) : "") : "Chaîne Twitch";
   if (LIVE) {
     $("liveBox").innerHTML = `<div class="onair"><div><span class="tag-live"><b></b>EN DIRECT</span><h3>${esc(LIVE.title || "S1S0N est en live")}</h3>` +
@@ -440,6 +591,7 @@ fetch("data.json?t=" + Date.now(), { cache: "no-store" }).then(r => r.json()).th
   D = d;
   Object.values(D.viewers || {}).forEach(v => { v.items = v.items || []; v.itemsN = v.items.length; });
   render();
+  renderExtras();
   showLive();
   liveCheck();
 }).catch(() => { $("cmds").innerHTML = `<div class="empty">La page n'est pas encore prête : reviens dans quelques minutes.</div>`; });
